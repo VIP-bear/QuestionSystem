@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 与dao层连接sql语句-->
+<!-- mapper标签要指定namespace属性，不然会报错，可看做包名-->
+<mapper namespace="com.dao.CommDao">
+	
+	<select id="findAllQuestion" resultMap="questionResultMap">
+    	select * from question where test_id = #{testId}
+    </select>
+    
+	<resultMap type="com.domain.Question" id="questionResultMap">
+    	<id property="questionid" column="question_id"/>
+    	<result property="questiontitle" column="question_title"/>
+    	<result property="questiontype" column="question_type"/>
+    	<result property="questionorder" column="question_num"/>
+    	<result property="testid" column="test_id"/>
+    </resultMap>
+    
+    <select id="findOptionsByQue" resultMap="optionResultMap">
+    	select * from `option` where question_id = #{Questionid}
+    </select>
+    <resultMap type="com.domain.Option" id="optionResultMap">
+    	<id property="optionid" column="option_id"/>
+    	<result property="optionorder" column="option_num"/>
+    	<result property="optioncontent" column="option_content"/>
+    	<result property="questionid" column="question_id"/>
+   	</resultMap>
+    
+	
+</mapper>

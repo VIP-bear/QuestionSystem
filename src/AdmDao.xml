@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 与dao层连接sql语句-->
+<!-- mapper标签要指定namespace属性，不然会报错，可看做包名-->
+<mapper namespace="com.dao.AdmDao">
+    <select id="findAdm" resultType="String">
+        select admin_name from admin where admin_password=#{admpwd} and admin_name=#{admname}
+    </select>
+    <select id="findAllTest" resultMap="testResultMap">
+    	select * from test
+    </select>
+    <resultMap type="com.domain.Test" id="testResultMap">
+    	<id property="testid" column="test_id" />
+    	<result property="testtitle" column="test_title" />
+    	<result property="datetime" column="test_releaseTime" />
+    	<result property="deadline" column="test_deadline" />
+	</resultMap>
+    <insert id="insertTest">
+        insert into test values (#{id},#{title},now(),#{deadline},#{Quenum})
+    </insert> 
+    <delete id="deleteTest"> 
+    	delete from test where test_id = #{id}
+    </delete>
+    <insert id="insertOption">
+    	insert into `option`(option_id,option_num,option_content,question_id) values (#{Optionid},#{Optionorder},#{content},#{Questionid})
+    </insert>
+    <delete id="deleteOption">
+    	delete from `option` where option_id = #{Optionid} and question_id = #{Questionid}
+    </delete>
+    <insert id="insertQuestion">
+    	insert into question (question_id,question_title,question_type,question_num,test_id) values (#{Queid},#{Quetitle},#{Quetype},#{Queorder},#{Testid})
+    </insert>
+    <delete id="deleteQuestion">
+    	delete from question where question_id = #{Queid}
+    </delete>
+    <update id="changeQuestion">
+    	update question set question_title = #{Quetitle} where question_id = #{Queid}
+    </update>
+    <select id="countQuestionNumber" resultType="int">
+    	select sum(question_number) from test
+    </select>
+    <select id="countTestNumber" resultType="int">
+    	select count(*) from test
+    </select>
+    <select id="countOptionNumber" resultType="int">
+    	select count(*) from `option`
+    </select>
+    <select id="countUserNumber" resultType="int">
+    	select count(distinct user_name) from answer where test_id = #{Testid}
+    </select>
+</mapper>

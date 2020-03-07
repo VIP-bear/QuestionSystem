@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 与dao层连接sql语句-->
+<!-- mapper标签要指定namespace属性，不然会报错，可看做包名-->
+<mapper namespace="com.dao.UserDao">
+    <select id="findUser" resultType="String">
+        select user_name from user where user_name=#{username} and user_password=#{userpwd}
+    </select>
+    <select id="findAllTest" resultMap="testResultMap">
+    	select * from test where now() &lt; test_deadline
+    </select>
+    <resultMap type="com.domain.Test" id="testResultMap">
+    	<id property="testid" column="test_id" />
+    	<result property="testtitle" column="test_title" />
+    	<result property="datetime" column="test_releaseTime" />
+    	<result property="deadline" column="test_deadline" />
+	</resultMap>
+    <insert id="insertUser">
+        insert into user values(#{username},#{userpwd})
+    </insert> 
+    <delete id="deleteUser"> 
+    	delete from user where user_name = #{username} and user_password = #{userpwd}
+    </delete>
+    <select id="findByUsername" resultType="com.domain.User">
+        select * from user where user_name=#{username}
+    </select>
+    <insert id="insertAnswer">
+    	insert into answer values (#{username},#{questionId},#{Optionorder},#{Testid})
+    </insert>
+    <select id="findAnswerbyTestid" resultMap="resResultMap">
+   		select * from answer where user_name = #{Username} and test_id = #{Testid}
+   	</select>
+    <resultMap type="com.domain.Answer" id="resResultMap">
+    	<id property="userName" column="user_name"/>
+    	<id property="questionId" column="question_id"/>
+    	<result property="answerContent" column="answer_content"/>
+    	<result property="testId" column="test_id"/>
+   	</resultMap>
+</mapper>
